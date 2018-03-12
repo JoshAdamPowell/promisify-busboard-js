@@ -53,6 +53,8 @@ export default class ConsoleRunner {
     getLocationForPostCode(postcode, that) {
 
         return new Promise(function (resolve, reject) {
+            console.log("This" + this);
+            console.log("That" + that);
             that.makeGetRequestPromise(POSTCODES_BASE_URL, `postcodes/${postcode}`, []).then((responseBody) => {
 
                 const jsonBody = JSON.parse(responseBody);
@@ -92,10 +94,10 @@ export default class ConsoleRunner {
         let postcode = await that.getPostcodePromise();
 
         postcode = postcode.replace(/\s/g, '');
-        that.getLocationForPostCode(postcode, that).then((location) => {
-            that.getNearestStopPoints(location.latitude, location.longitude, 5, that).then((stopPoints) => {
-                that.displayStopPoints(stopPoints);
-            });
-        })
+        let location = await that.getLocationForPostCode(postcode, that);
+
+        let stopPoints = await that.getNearestStopPoints(location.latitude, location.longitude, 5, that);
+
+        that.displayStopPoints(stopPoints);
     }
 }
