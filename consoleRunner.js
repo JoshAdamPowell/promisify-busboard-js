@@ -11,6 +11,13 @@ const POSTCODES_BASE_URL = 'https://api.postcodes.io';
 const TFL_BASE_URL = 'https://api.tfl.gov.uk';
 
 export default class ConsoleRunner {
+    postcodePromise = new Promise(function(resolve, reject) {
+        readline.question('\nEnter your postcode: ', function (postcode) {
+            readline.close();
+            resolve(postcode);
+        });
+    });
+
 
     promptForPostcode(callback) {
         readline.question('\nEnter your postcode: ', function(postcode) {
@@ -74,7 +81,13 @@ export default class ConsoleRunner {
     }
 
     run() {
+
         const that = this;
+
+        that.postcodePromise.then((postcode) => {
+            
+        });
+
         that.promptForPostcode(function(postcode) {
             postcode = postcode.replace(/\s/g, '');
             that.getLocationForPostCode(postcode, function(location) {
